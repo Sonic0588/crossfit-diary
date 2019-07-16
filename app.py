@@ -16,35 +16,27 @@ db.input_skills(conn, skill_timecap, skill_type)
 wod_type = "for_time"
 wod_timecap = '15'
 
+db.input_wods(conn, wod_timecap, wod_type)
 
+[skill_id], = db.get_id(conn, "skills")
+[wod_id], = db.get_id(conn, "wods")
 
-cursor.execute('''
-	INSERT INTO wods ('timecap', 'type')
-	SELECT ? as timecap, ROWID FROM type_complex 
-	WHERE name = ?
-''', (wod_timecap, wod_type))
+# cursor.execute('''
+# 	INSERT INTO days ('date', 'skill_id', 'wod_id')
+# 	VALUES (?, ?, ?)
+# ''', (date, skill_id, wod_id))
 
+# cursor.execute('''
+# 	INSERT INTO rounds ('skill_id')
+# 	VALUES (?)
+# 	''', (skill_id,))
 
-[skill_id], = cursor.execute("SELECT ROWID FROM skills ORDER BY ROWID DESC LIMIT 1")
-[wod_id], = cursor.execute("SELECT ROWID FROM wods ORDER BY ROWID DESC LIMIT 1")
+# cursor.execute('''
+# 	INSERT INTO rounds ('wod_id')
+# 	VALUES (?)
+# 	''', (wod_id,))
 
-print(type(skill_id))
-cursor.execute('''
-	INSERT INTO days ('date', 'skill_id', 'wod_id')
-	VALUES (?, ?, ?)
-''', (date, skill_id, wod_id))
-
-cursor.execute('''
-	INSERT INTO rounds ('skill_id')
-	VALUES (?)
-	''', (skill_id,))
-
-cursor.execute('''
-	INSERT INTO rounds ('wod_id')
-	VALUES (?)
-	''', (wod_id,))
-
-conn.commit()
+# conn.commit()
 
 # skill_round_time = input("Время подхода навыка")
 # skill_exercise = input("Название упражнения")

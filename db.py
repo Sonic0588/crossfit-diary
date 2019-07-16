@@ -64,7 +64,7 @@ def create_db(conn):
 			);'''
 		)
 
-def input_skills(conn, skill_timecap, skill_tipe):
+def input_skills(conn, skill_timecap, skill_type):
 	with conn:
 		cursor = conn.cursor()
 		cursor.execute('''
@@ -72,3 +72,17 @@ def input_skills(conn, skill_timecap, skill_tipe):
 			SELECT ? as timecap, ROWID FROM type_complex 
 			WHERE name = ?
 		''', (skill_timecap, skill_type))
+
+def input_wods(conn, wod_timecap, wod_type):
+	with conn:
+		cursor = conn.cursor()
+		cursor.execute('''
+			INSERT INTO wods ('timecap', 'type')
+			SELECT ? as timecap, ROWID FROM type_complex 
+			WHERE name = ?
+		''', (wod_timecap, wod_type))
+
+def get_id(conn, table):
+	with conn:
+		cursor = conn.cursor()
+		return cursor.execute(f"SELECT ROWID FROM {table} ORDER BY ROWID DESC LIMIT 1")
